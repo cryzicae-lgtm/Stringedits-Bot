@@ -460,10 +460,10 @@ export const botConfig = {
 
     // Utility/quality-of-life modules.
     voice: false,
-    search: false,
-    tools: false,
-    utility: false,
-    community: false,
+    search: true,
+    tools: true,
+    utility: true,
+    community: true,
     fun: false,
   },
 };

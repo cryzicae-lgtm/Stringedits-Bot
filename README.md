@@ -1,4 +1,4 @@
-# 🤖 TitanBot - Ultimate Discord Bot
+# 🤖 StringEdits Bot - Ultimate Discord Bot
 
 **TitanBot** is a powerful, feature-rich Discord bot designed to enhance your server experience with comprehensive moderation tools, engaging economy systems, utility features, and much more. Built with modern Discord.js v14 and PostgreSQL for optimal performance and data persistence.
 
@@ -30,16 +30,6 @@ TitanBot offers a complete suite of tools for Discord server management and comm
 - **User Notes** - Keep detailed moderation records
 - **Case Management** - View and track all mod actions
 
-### 💰 Economy System
-- **Shop & Inventory** - Buy and manage items
-- **Gambling** - Risk it for rewards
-- **Pay System** - Transfer money between users
-
-### 🎮 Fun & Entertainment
-- **Random Facts** - Learn something new
-- **Wanted Poster** - Create fun wanted images
-- **Text Reversal** - Reverse any text
-
 ### 🎫 Advanced Ticket System
 - **Claim & Priority** - Staff ticket management
 - **Ticket Limits** - Prevent spam
@@ -58,20 +48,10 @@ TitanBot offers a complete suite of tools for Discord server management and comm
 </td>
 <td width="50%" valign="top">
 
-### 📊 Leveling & XP System
-- **XP Tracking** - Automatic message-based XP
-- **Level Roles** - Auto-assign roles by level
-- **Custom Configuration** - Personalize leveling
-
 ### 🎉 Giveaways & Events
 - **Multiple Winners** - Support multi-winner giveaways
 - **Auto Picking** - Automatic winner selection
 - **Reroll System** - Pick new winners if needed
-
-### 🎂 Birthday System
-- **Birthday Tracking** - Never miss a birthday
-- **Auto Announcements** - Celebrate automatically
-- **Timezone Support** - Accurate worldwide tracking
 
 ### 🔧 Utility Tools
 - **Report System** - Report issues to staff

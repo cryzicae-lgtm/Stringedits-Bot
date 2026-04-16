@@ -5,7 +5,7 @@ export const botConfig = {
   // =========================
   // BOT PREFIX
   // =========================
-  prefix: "/",
+  prefix: "string",
 
   // =========================
   // BOT PRESENCE (what users see under the bot name)
@@ -448,7 +448,7 @@ export const botConfig = {
     welcome: true,
 
     // Community engagement systems.
-    tickets: true,
+    tickets: false,
     giveaways: false,
     birthday: false,
     counter: false,

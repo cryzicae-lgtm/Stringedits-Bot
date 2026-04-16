@@ -434,6 +434,29 @@ export const botConfig = {
     commandDisabled: "This command has been disabled.",
     maintenanceMode: "The bot is currently in maintenance mode.",
   },
+  
+const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const OpenAI = require("openai");
+
+// 1. Setup Discord Client
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
+});
+
+// 2. Setup OpenRouter Connection
+// IMPORTANT: Reset your keys at openrouter.ai/keys and discord.com/developers
+const openrouter = new OpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: "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", 
+  defaultHeaders: {
+    "HTTP-Referer": "http://localhost:3000", // Required for free models
+    "X-Title": "My Custom AI Bot",
+  }
+});
 
   // =========================
   // FEATURE TOGGLES

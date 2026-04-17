@@ -448,7 +448,7 @@ export const botConfig = {
     welcome: true,
 
     // Community engagement systems.
-    tickets: false,
+    tickets: true,
     giveaways: false,
     birthday: false,
     counter: false,
@@ -460,7 +460,7 @@ export const botConfig = {
 
     // Utility/quality-of-life modules.
     voice: false,
-    search: true,
+    search: false,
     tools: true,
     utility: true,
     community: true,

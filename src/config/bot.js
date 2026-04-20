@@ -57,9 +57,9 @@ export const botConfig = {
  // ==========================
 // CHAT BOT - SAPPHIRE AI
 // ==========================
-const { Client, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const OpenAI = require("openai");
-require('dotenv').config();
+import { Client, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import OpenAI from 'openai';
+import 'dotenv/config';
 
 const client = new Client({
   intents: [
@@ -68,6 +68,8 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ],
 });
+
+// The rest of your logic stays the same...
 
 // Use the variable name from your .env file here, NOT the actual key string.
 const openrouter = new OpenAI({

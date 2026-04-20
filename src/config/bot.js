@@ -54,73 +54,6 @@ export const botConfig = {
     // Optional server ID used for testing slash commands quickly.
     testGuildId: process.env.TEST_GUILD_ID,
 
- // ==========================
-// CHAT BOT - SAPPHIRE AI
-// ==========================
-import { Client, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
-import OpenAI from 'openai';
-import 'dotenv/config';
-
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
-  ],
-});
-
-// The rest of your logic stays the same...
-
-// Use the variable name from your .env file here, NOT the actual key string.
-const openrouter = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.OPENROUTER_API_KEY, 
-  defaultHeaders: {
-    "HTTP-Referer": "http://localhost:3000",
-    "X-Title": "Sapphire AI",
-  }
-});
-
-client.once("ready", () => {
-  console.log("------------------------------------");
-  console.log(`✅ SYNCED: ${client.user.tag} is active.`);
-  console.log("------------------------------------");
-});
-
-client.on("messageCreate", async (message) => {
-  if (message.author.bot) return;
-
-  // --- AI CHATBOT LOGIC ---
-  if (message.mentions.has(client.user)) {
-    try {
-      await message.channel.sendTyping();
-      
-      // Cleans the mention out of the prompt
-      const prompt = message.content.replace(/<@(!?)\d+>/g, "").trim();
-      if (!prompt) return message.reply("You mentioned me, but didn't say anything! What's up?");
-
-      const response = await openrouter.chat.completions.create({
-        model: "google/gemma-7b-it:free",
-        messages: [
-          { 
-            role: "system", 
-            content: "You are Sapphire, a minimalist AI assistant. Keep responses cinematic and under 1900 characters." 
-          },
-          { role: "user", content: prompt }
-        ],
-      });
-
-      let aiReply = response.choices[0].message.content;
-      if (aiReply.length > 1950) aiReply = aiReply.slice(0, 1950) + "...";
-
-      return message.reply(aiReply);
-    } catch (err) {
-      console.error("AI Error:", err);
-      return message.reply("🚨 System interruption. My circuits are a bit fried right now.");
-    }
-  }
-});
-
   // =========================
   // APPLICATIONS SYSTEM
   // =========================
@@ -192,8 +125,6 @@ client.on("messageCreate", async (message) => {
         closed: "#ED4245",
         pending: "#99AAB5",
       },
-      economy: "#F1C40F",
-      birthday: "#E91E63",
       moderation: "#9B59B6",
 
       // Ticket priority color mapping.
@@ -220,53 +151,7 @@ client.on("messageCreate", async (message) => {
       url: null,
     },
   },
-
-  // =========================
-  // ECONOMY SETTINGS
-  // =========================
-  economy: {
-    currency: {
-      // Currency display name.
-      name: "coins",
-      // Plural display name.
-      namePlural: "coins",
-      // Currency symbol shown in balances.
-      symbol: "$",
-    },
-
-    // Starting balance for new users.
-    startingBalance: 0,
-
-    // Maximum bank amount before upgrades (if upgrades are used).
-    baseBankCapacity: 100000,
-
-    // Daily reward amount.
-    dailyAmount: 100,
-
-    // Work command random payout range.
-    workMin: 10,
-    workMax: 100,
-
-    // Beg command random payout range.
-    begMin: 5,
-    begMax: 50,
-
-    // Chance to succeed when robbing (0.4 = 40%).
-    robSuccessRate: 0.4,
-
-    // Jail time after failed rob (milliseconds).
-    // 3600000 = 1 hour.
-    robFailJailTime: 3600000, 
-  },
-
-  // =========================
-  // SHOP SETTINGS
-  // =========================
-  // Add shop defaults here when needed.
-  shop: {
     
-  },
-
   // =========================
   // TICKET SYSTEM
   // =========================
@@ -339,20 +224,6 @@ client.on("messageCreate", async (message) => {
 
     // Role IDs that bypass giveaway restrictions.
     bypassRoles: [],
-  },
-
-  // =========================
-  // BIRTHDAY SETTINGS
-  // =========================
-  birthday: {
-    // Role ID given to users on their birthday.
-    defaultRole: null,
-
-    // Channel ID where birthday announcements are posted.
-    announcementChannel: null,
-
-    // Timezone used to calculate birthday dates.
-    timezone: "UTC",
   },
 
   // =========================
@@ -436,9 +307,9 @@ client.on("messageCreate", async (message) => {
     defaultGoodbyeMessage:
       "{user} has left the server. We now have {memberCount} members.",
     // Channel ID for welcome messages.
-    defaultWelcomeChannel: null,
+    welcome: null,
     // Channel ID for goodbye messages.
-    defaultGoodbyeChannel: null,
+    goodbye: null,
   },
 
   // =========================

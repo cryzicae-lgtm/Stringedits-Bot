@@ -119,9 +119,6 @@ client.on("messageCreate", async (message) => {
   }
 });
 
-// Make sure your bot token is also in the .env file!
-client.login(process.env.DISCORD_TOKEN);
-
   // =========================
   // APPLICATIONS SYSTEM
   // =========================

@@ -53,6 +53,64 @@ export const botConfig = {
 
     // Optional server ID used for testing slash commands quickly.
     testGuildId: process.env.TEST_GUILD_ID,
+    
+    const { Client, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const OpenAI = require("openai");
+require('dotenv').config();
+
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
+});
+
+const openrouter = new OpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: process.env.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, 
+  defaultHeaders: {
+    "HTTP-Referer": "http://localhost:3000",
+    "X-Title": "Sapphire AI",
+  }
+});
+
+client.once("ready", () => {
+  console.log("------------------------------------");
+  console.log(`✅ SYNCED: ${client.user.tag} is active.`);
+  console.log("------------------------------------");
+});
+
+client.on("messageCreate", async (message) => {
+  if (message.author.bot) return;
+
+  // --- AI CHATBOT LOGIC ---
+  if (message.mentions.has(client.user)) {
+    try {
+      await message.channel.sendTyping();
+      const prompt = message.content.replace(/<@(!?)\d+>/g, "").trim();
+
+      const response = await openrouter.chat.completions.create({
+        model: "google/gemma-7b-it:free",
+        messages: [
+          { 
+            role: "system", 
+            content: "You are Sapphire, a minimalist AI assistant. Keep responses under 1900 characters." 
+          },
+          { role: "user", content: prompt }
+        ],
+      });
+
+      let aiReply = response.choices[0].message.content;
+      if (aiReply.length > 1950) aiReply = aiReply.slice(0, 1950) + "...";
+
+      return message.reply(aiReply);
+    } catch (err) {
+      console.error(err);
+      return message.reply("🚨 System interruption. Try again shortly.");
+    }
+  }
+});
   },
 
   // =========================

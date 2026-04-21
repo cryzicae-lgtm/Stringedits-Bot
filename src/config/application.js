@@ -49,6 +49,24 @@ export const botConfig = {
     // Optional server ID used for testing slash commands quickly.
     testGuildId: process.env.TEST_GUILD_ID,
   },
+  
+const client = new Client({intents: [] });
+
+client.once(Events.ClientReady, c => {
+  console.log(`Logged in as ${c.user.username}`);
+
+  const welcome = new SlashCommandBuilder()
+    .setName("welcome")
+    .setDescription("Set up a welcome message for new members.");
+
+    client.application.commands.create(welcome);
+});
+
+client.on(Events.InteractionCreate, interaction => {
+  if (interaction.commandName === "welcome") {
+    interaction.reply("create welcome message embed");
+  }
+});
 
   // =========================
   // APPLICATIONS SYSTEM

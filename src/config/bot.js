@@ -93,7 +93,7 @@ type: 2,
   // FEATURE TOGGLES
   // =========================
   features: {
-    moderation: true,
+    moderation: false,
     logging: true,
     welcome: true,
     reactionRoles: true,

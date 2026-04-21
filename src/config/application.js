@@ -49,7 +49,9 @@ export const botConfig = {
     // Optional server ID used for testing slash commands quickly.
     testGuildId: process.env.TEST_GUILD_ID,
   },
-  
+const { Client, Events, SlashCommandBuilder, ButtonInteraction } = require('discord.js');
+const {token} = require("./config.json");
+
 const client = new Client({intents: [] });
 
 client.once(Events.ClientReady, c => {
@@ -68,6 +70,7 @@ client.on(Events.InteractionCreate, interaction => {
   }
 });
 
+client.login(token);
   // =========================
   // APPLICATIONS SYSTEM
   // =========================

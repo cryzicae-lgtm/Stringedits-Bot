@@ -1,4 +1,4 @@
-import { Events, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
+import { Events, EmbedBuilder, PermissionFlagsBits, AuditLogEvent } from 'discord.js';
 import { getColor } from '../config/bot.js';
 import { getWelcomeConfig, getUserApplications, deleteApplication } from '../utils/database.js';
 import { formatWelcomeMessage } from '../utils/welcome.js';
@@ -7,6 +7,7 @@ import { getServerCounters, updateCounter } from '../services/serverstatsService
 import { getGuildBirthdays, deleteBirthday } from '../utils/database.js';
 import { deleteUserLevelData } from '../services/leveling.js';
 import { logger } from '../utils/logger.js';
+import { sendModLog, fetchAuditEntry } from './modLogs.js';
 
 export default {
   name: Events.GuildMemberRemove,
@@ -15,7 +16,56 @@ export default {
   async execute(member) {
     try {
         const { guild, user } = member;
-        
+
+        // ── Kick detection via audit log ──────────────────────────────────────
+        try {
+            const kickEntry = await fetchAuditEntry(guild, AuditLogEvent.MemberKick, user.id);
+            if (kickEntry && Date.now() - kickEntry.createdTimestamp < 5000) {
+                const moderator = kickEntry.executor ?? null;
+                const reason = kickEntry.reason ?? 'No reason provided';
+
+                const kickEmbed = new EmbedBuilder()
+                    .setColor(0xFFA500)
+                    .setTitle('👢 Member Kicked')
+                    .addFields(
+                        { name: '👤 User', value: `${user.tag} (${user.id})`, inline: true },
+                        {
+                            name: '🛡️ Moderator',
+                            value: moderator ? `${moderator.tag} (${moderator.id})` : 'Unknown',
+                            inline: true,
+                        },
+                        { name: '📝 Reason', value: reason, inline: false }
+                    )
+                    .setThumbnail(user.displayAvatarURL())
+                    .setTimestamp()
+                    .setFooter({ text: `Guild: ${guild.name}` });
+
+                await sendModLog(member.client, guild.id, kickEmbed);
+
+                await logEvent({
+                    client: member.client,
+                    guildId: guild.id,
+                    eventType: EVENT_TYPES.MODERATION_KICK,
+                    data: {
+                        description: `${user.tag} was kicked`,
+                        userId: user.id,
+                        fields: [
+                            { name: '👤 User', value: `${user.tag} (${user.id})`, inline: true },
+                            {
+                                name: '🛡️ Moderator',
+                                value: moderator ? `${moderator.tag} (${moderator.id})` : 'Unknown',
+                                inline: true,
+                            },
+                            { name: '📝 Reason', value: reason, inline: false },
+                        ],
+                    },
+                }).catch(() => {});
+            }
+        } catch (kickError) {
+            logger.debug('[MOD_LOGS] Error checking kick audit log:', kickError);
+        }
+        // ─────────────────────────────────────────────────────────────────────
+
         const welcomeConfig = await getWelcomeConfig(member.client, guild.id);
         
         const goodbyeChannelId = welcomeConfig?.goodbyeChannelId;

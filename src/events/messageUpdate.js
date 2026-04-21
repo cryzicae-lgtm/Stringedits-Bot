@@ -1,6 +1,7 @@
 import { Events } from 'discord.js';
 import { logEvent, EVENT_TYPES } from '../services/loggingService.js';
 import { logger } from '../utils/logger.js';
+import { trackRateEdit } from '../commands/Moderation/rateEdits.js';
 
 const MAX_LOGGED_EDIT_CONTENT_LENGTH = 512;
 
@@ -12,8 +13,12 @@ export default {
     try {
       if (!newMessage.guild || newMessage.author?.bot) return;
 
-      
       if (oldMessage.content === newMessage.content) return;
+
+      // Track rate-edits channel edits (posts a rating embed with reactions)
+      await trackRateEdit(newMessage.client, oldMessage, newMessage).catch(err =>
+        logger.debug('[MESSAGE_UPDATE] trackRateEdit error:', err)
+      );
 
       const fields = [];
 

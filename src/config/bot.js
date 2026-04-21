@@ -18,8 +18,6 @@ presence: {
 
 status: "dnd",
 
-
-
 // Activity lines shown under the bot name.
 
 // `type` number mapping from Discord:
@@ -48,7 +46,6 @@ type: 2,
 ],
 
 },
-
 
   // =========================
   // BRANDING & EMBEDS
